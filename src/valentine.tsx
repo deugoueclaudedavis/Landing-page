@@ -1,37 +1,59 @@
 import React, { useState } from 'react';
-import { Menu, X, CheckCircle, ChevronRight, Smartphone, Palette, Layout, MousePointer2 } from 'lucide-react';
+import { Link } from 'react-router-dom'
+import { Menu, X, ChevronRight, Smartphone, Palette, Layout } from 'lucide-react';
 
 // Types pour les composants
 interface ServiceCardProps {
   title: string;
   desc: string;
   icon: React.ReactNode;
+  href: string;
 }
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [email, setEmail] = useState('');
 
   return (
     <div className="min-h-screen bg-[#FDFDFF] text-slate-900 font-sans">
       {/* --- NAVIGATION --- */}
       <nav className="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold tracking-tight text-[#1A1A1A]">Design<span className="text-indigo-600">Studio</span></div>
-          
+          <div className="text-2xl font-bold tracking-tight text-[#1A1A1A]">
+            Frame<span className="text-indigo-600">Tech</span>
+          </div>
+
           <div className="hidden md:flex space-x-8 font-medium text-sm">
             <a href="#services" className="hover:text-indigo-600 transition">Services</a>
-            <a href="#vision" className="hover:text-indigo-600 transition">Notre Vision</a>
+            <a href="/vision" className="hover:text-indigo-600 transition">Notre Vision</a>
             <a href="#team" className="hover:text-indigo-600 transition">L'Équipe</a>
           </div>
 
           <button className="hidden md:block bg-[#1A1A1A] text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-indigo-600 transition">
-            Démarrer un projet
+            <Link to="/demarer-un-projet">Démarrer un projet</Link>
           </button>
 
-          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {/* FIX: bouton burger avec aria-label pour l'accessibilité */}
+          <button
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+          >
             {isMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
+
+        {/* FIX: menu mobile manquant — ajout du panneau déroulant */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4 flex flex-col space-y-4 text-sm font-medium">
+            <a href="#services" className="hover:text-indigo-600 transition" onClick={() => setIsMenuOpen(false)}>Services</a>
+            <a href="#vision" className="hover:text-indigo-600 transition" onClick={() => setIsMenuOpen(false)}>Notre Vision</a>
+            <a href="#team" className="hover:text-indigo-600 transition" onClick={() => setIsMenuOpen(false)}>L'Équipe</a>
+            <button className="bg-[#1A1A1A] text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-indigo-600 transition w-fit">
+              Démarrer un projet
+            </button>
+          </div>
+        )}
       </nav>
 
       {/* --- HERO SECTION --- */}
@@ -39,7 +61,8 @@ const App: React.FC = () => {
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-5xl md:text-7xl font-bold leading-[1.1] mb-6">
-              Les grandes marques naissent de <span className="text-indigo-600 underline decoration-lime-400">beaux designs</span>.
+              Les grandes marques naissent de{' '}
+              <span className="text-indigo-600 underline decoration-lime-400">beaux designs</span>.
             </h1>
             <p className="text-gray-500 text-lg mb-8 max-w-md">
               Nous transformons vos idées en expériences numériques mémorables grâce au branding, à l'UI/UX et au développement mobile.
@@ -52,9 +75,12 @@ const App: React.FC = () => {
           </div>
           <div className="relative">
             <div className="rounded-3xl overflow-hidden shadow-2xl">
-              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80" alt="Bureau" className="w-full object-cover h-[500px]" />
+              <img
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80"
+                alt="Équipe au bureau"
+                className="w-full object-cover h-[500px]"
+              />
             </div>
-            {/* Badge flottant inspiré de l'image */}
             <div className="absolute -bottom-6 -left-6 bg-lime-400 p-6 rounded-2xl shadow-xl hidden lg:block">
               <p className="font-bold text-2xl">100%</p>
               <p className="text-sm font-medium">Satisfaction Client</p>
@@ -73,7 +99,7 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      {/* --- SERVICES / WHY CHOOSE US --- */}
+      {/* --- SERVICES --- */}
       <section id="services" className="py-24 px-6 max-w-7xl mx-auto">
         <div className="mb-16">
           <h2 className="text-4xl font-bold mb-4">Pourquoi nous choisir ?</h2>
@@ -81,17 +107,20 @@ const App: React.FC = () => {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          <ServiceCard 
+          <ServiceCard
+            href="/branding"
             icon={<Palette className="w-8 h-8 text-indigo-600" />}
             title="Branding & Identité"
             desc="Création de logos et de chartes graphiques qui captent l'essence de votre marque."
           />
-          <ServiceCard 
+          <ServiceCard
+            href="/uiux"
             icon={<Layout className="w-8 h-8 text-indigo-600" />}
             title="Conception de Maquettes"
             desc="Prototypes UI/UX haute fidélité pour vos sites et applications web."
           />
-          <ServiceCard 
+          <ServiceCard
+            href="/mobile"
             icon={<Smartphone className="w-8 h-8 text-indigo-600" />}
             title="Apps Multiplateforme"
             desc="Développement d'applications mobiles performantes pour iOS et Android."
@@ -99,20 +128,26 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* --- SECTION ÉQUIPE (Couleur Violette du Design) --- */}
+      {/* --- SECTION ÉQUIPE --- */}
       <section id="team" className="py-24 px-6 bg-indigo-900 text-white rounded-[3rem] mx-4 my-12">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-16">Nos Experts Créatifs</h2>
           <div className="grid md:grid-cols-3 gap-12">
-            {[1, 2, 3].map((i) => (
+            {/* FIX: contenu réel avec initiales au lieu de div vide grise */}
+            {[
+              { name: 'Alice Dupont', role: 'Designer Senior' },
+              { name: 'Marc Lebrun', role: 'Développeur Mobile' },
+              { name: 'Sara Kamga', role: 'UI/UX Lead' },
+            ].map((member, i) => (
               <div key={i} className="group">
                 <div className="bg-white/10 rounded-3xl p-4 mb-4 group-hover:bg-white/20 transition">
-                  <div className="bg-gray-300 h-64 rounded-2xl mb-4 overflow-hidden">
-                     {/* Remplacer par de vraies images */}
-                    <div className="w-full h-full bg-slate-400"></div>
+                  <div className="h-64 rounded-2xl mb-4 overflow-hidden bg-indigo-700 flex items-center justify-center">
+                    <span className="text-5xl font-bold text-white/60">
+                      {member.name.charAt(0)}
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold">Expert {i}</h3>
-                  <p className="text-indigo-200">Designer Senior</p>
+                  <h3 className="text-xl font-bold">{member.name}</h3>
+                  <p className="text-indigo-200">{member.role}</p>
                 </div>
               </div>
             ))}
@@ -128,9 +163,21 @@ const App: React.FC = () => {
             <p className="text-gray-500 max-w-xs mb-6">
               Prêt à lancer votre prochain grand projet avec nous ? Contactez-nous aujourd'hui.
             </p>
+            {/* FIX: input contrôlé avec useState */}
             <div className="flex space-x-4">
-               <input type="email" placeholder="Votre email" className="bg-gray-100 px-4 py-2 rounded-lg outline-none focus:ring-2 ring-indigo-500" />
-               <button className="bg-indigo-600 text-white px-6 py-2 rounded-lg">S'abonner</button>
+              <input
+                type="email"
+                placeholder="Votre email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-gray-100 px-4 py-2 rounded-lg outline-none focus:ring-2 ring-indigo-500"
+              />
+              <button
+                onClick={() => { alert(`Abonné : ${email}`); setEmail(''); }}
+                className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition"
+              >
+                S'abonner
+              </button>
             </div>
           </div>
           <div>
@@ -145,9 +192,9 @@ const App: React.FC = () => {
           <div>
             <h4 className="font-bold mb-6">Contact</h4>
             <ul className="space-y-4 text-gray-500 text-sm">
-              <li>contact@designstudio.com</li>
-              <li>+33 1 23 45 67 89</li>
-              <li>Paris, France</li>
+              <li>deugoueclaudedaurian@gmail.com</li>
+              <li>+237 6 94 21 81 00</li>
+              <li>Douala, Cameroun</li>
             </ul>
           </div>
         </div>
@@ -156,17 +203,20 @@ const App: React.FC = () => {
   );
 };
 
-// Composant de carte de service réutilisable
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, desc, icon }) => (
+// FIX: href utilisé sur un vrai lien <a> au lieu d'être ignoré
+const ServiceCard: React.FC<ServiceCardProps> = ({ title, desc, icon, href }) => (
   <div className="p-10 bg-white border border-gray-100 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all hover:-translate-y-2 group">
     <div className="mb-6 p-4 bg-gray-50 rounded-2xl inline-block group-hover:bg-lime-400 transition-colors">
       {icon}
     </div>
     <h3 className="text-2xl font-bold mb-4">{title}</h3>
     <p className="text-gray-500 leading-relaxed">{desc}</p>
-    <button className="mt-6 flex items-center text-indigo-600 font-bold group">
+    <a
+      href={href}
+      className="mt-6 flex items-center text-indigo-600 font-bold group w-fit"
+    >
       En savoir plus <ChevronRight className="ml-1 w-4 h-4 group-hover:ml-2 transition-all" />
-    </button>
+    </a>
   </div>
 );
 
