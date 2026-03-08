@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import { ChevronRight, Smartphone, Apple, Star, Shield, Zap, RefreshCw, Code, CheckCircle } from 'lucide-react';
 
 const MobilePage: React.FC = () => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import { ChevronRight, Layout, Monitor, Tablet, Smartphone, Eye, Zap, Users, BarChart2 } from 'lucide-react';
 
 const UIUXPage: React.FC = () => {

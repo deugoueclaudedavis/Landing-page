@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import { ChevronRight, Palette, Star, Layers, Type, Feather, Circle } from 'lucide-react';
 
 const BrandingPage: React.FC = () => {

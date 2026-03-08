@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import { ChevronRight, ExternalLink, ArrowUpRight, Filter } from 'lucide-react';
 
 type Category = 'tous' | 'branding' | 'uiux' | 'mobile';

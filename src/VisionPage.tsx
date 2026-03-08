@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 import { ChevronRight, Eye, Heart, Globe, Lightbulb, TrendingUp, Award, Users, Target, Sparkles, ArrowRight } from 'lucide-react';
 
 const VisionPage: React.FC = () => {
