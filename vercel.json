@@ -1,15 +1,5 @@
 {
   "rewrites": [
-    { "source": "/branding", "destination": "/index.html" },
-    { "source": "/uiux", "destination": "/index.html" },
-    { "source": "/mobile", "destination": "/index.html" },
-    { "source": "/vision", "destination": "/index.html" },
-    { "source": "/demarrer", "destination": "/index.html" },
-    { "source": "/devis", "destination": "/index.html" },
-    { "source": "/travaux", "destination": "/index.html" },
-    { "source": "/realisations", "destination": "/index.html" },
-    { "source": "/maquettes", "destination": "/index.html" },
-    { "source": "/estimer", "destination": "/index.html" },
-    { "source": "/apps", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
