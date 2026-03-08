@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { Menu, X, ChevronRight, Smartphone, Palette, Layout } from 'lucide-react';
 
-// Types pour les composants
 interface ServiceCardProps {
   title: string;
   desc: string;
   icon: React.ReactNode;
-  href: string;
+  to: string;
 }
 
 const App: React.FC = () => {
@@ -16,24 +15,28 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFDFF] text-slate-900 font-sans">
+
       {/* --- NAVIGATION --- */}
       <nav className="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold tracking-tight text-[#1A1A1A]">
+
+          <Link to="/" className="text-2xl font-bold tracking-tight text-[#1A1A1A]">
             Frame<span className="text-indigo-600">Tech</span>
-          </div>
+          </Link>
 
           <div className="hidden md:flex space-x-8 font-medium text-sm">
             <a href="#services" className="hover:text-indigo-600 transition">Services</a>
-            <a href="/vision" className="hover:text-indigo-600 transition">Notre Vision</a>
+            <Link to="/vision" className="hover:text-indigo-600 transition">Notre Vision</Link>
             <a href="#team" className="hover:text-indigo-600 transition">L'Équipe</a>
           </div>
 
-          <button className="hidden md:block bg-[#1A1A1A] text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-indigo-600 transition">
-            <Link to="/demarrer">Démarrer un projet</Link>
-          </button>
+          <Link
+            to="/demarrer"
+            className="hidden md:block bg-[#1A1A1A] text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-indigo-600 transition"
+          >
+            Démarrer un projet
+          </Link>
 
-          {/* FIX: bouton burger avec aria-label pour l'accessibilité */}
           <button
             className="md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -43,20 +46,24 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        {/* FIX: menu mobile manquant — ajout du panneau déroulant */}
+        {/* Menu mobile */}
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4 flex flex-col space-y-4 text-sm font-medium">
             <a href="#services" className="hover:text-indigo-600 transition" onClick={() => setIsMenuOpen(false)}>Services</a>
-            <a href="#vision" className="hover:text-indigo-600 transition" onClick={() => setIsMenuOpen(false)}>Notre Vision</a>
+            <Link to="/vision" className="hover:text-indigo-600 transition" onClick={() => setIsMenuOpen(false)}>Notre Vision</Link>
             <a href="#team" className="hover:text-indigo-600 transition" onClick={() => setIsMenuOpen(false)}>L'Équipe</a>
-            <button className="bg-[#1A1A1A] text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-indigo-600 transition w-fit">
+            <Link
+              to="/demarrer"
+              onClick={() => setIsMenuOpen(false)}
+              className="bg-indigo-600 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-indigo-700 transition text-center"
+            >
               Démarrer un projet
-            </button>
+            </Link>
           </div>
         )}
       </nav>
 
-      {/* --- HERO SECTION --- */}
+      {/* --- HERO --- */}
       <section className="pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
@@ -68,11 +75,15 @@ const App: React.FC = () => {
               Nous transformons vos idées en expériences numériques mémorables grâce au branding, à l'UI/UX et au développement mobile.
             </p>
             <div className="flex space-x-4">
-              <button className="bg-indigo-600 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg hover:shadow-indigo-200 transition">
-                  <Link to="/travaux">Voir nos travaux</Link>
-              </button>
+              <Link
+                to="/travaux"
+                className="bg-indigo-600 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg hover:shadow-indigo-200 transition"
+              >
+                Voir nos travaux
+              </Link>
             </div>
           </div>
+
           <div className="relative">
             <div className="rounded-3xl overflow-hidden shadow-2xl">
               <img
@@ -108,19 +119,19 @@ const App: React.FC = () => {
 
         <div className="grid md:grid-cols-3 gap-8">
           <ServiceCard
-            href="/branding"
+            to="/branding"
             icon={<Palette className="w-8 h-8 text-indigo-600" />}
             title="Branding & Identité"
             desc="Création de logos et de chartes graphiques qui captent l'essence de votre marque."
           />
           <ServiceCard
-            href="/uiux"
+            to="/uiux"
             icon={<Layout className="w-8 h-8 text-indigo-600" />}
             title="Conception de Maquettes"
             desc="Prototypes UI/UX haute fidélité pour vos sites et applications web."
           />
           <ServiceCard
-            href="/mobile"
+            to="/mobile"
             icon={<Smartphone className="w-8 h-8 text-indigo-600" />}
             title="Apps Multiplateforme"
             desc="Développement d'applications mobiles performantes pour iOS et Android."
@@ -133,11 +144,10 @@ const App: React.FC = () => {
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-16">Nos Experts Créatifs</h2>
           <div className="grid md:grid-cols-3 gap-12">
-            {/* FIX: contenu réel avec initiales au lieu de div vide grise */}
             {[
-              { name: 'Alice Dupont', role: 'Designer Senior' },
-              { name: 'Marc Lebrun', role: 'Développeur Mobile' },
-              { name: 'Sara Kamga', role: 'UI/UX Lead' },
+              { name: 'Alice Dupont', role: 'Designer Senior'    },
+              { name: 'Marc Lebrun',  role: 'Développeur Mobile' },
+              { name: 'Sara Kamga',   role: 'UI/UX Lead'         },
             ].map((member, i) => (
               <div key={i} className="group">
                 <div className="bg-white/10 rounded-3xl p-4 mb-4 group-hover:bg-white/20 transition">
@@ -159,11 +169,12 @@ const App: React.FC = () => {
       <footer className="py-20 px-6 border-t border-gray-100">
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-2">
-            <div className="text-2xl font-bold mb-6">DesignStudio</div>
+            <Link to="/" className="text-2xl font-bold mb-6 block">
+              Frame<span className="text-indigo-600">Tech</span>
+            </Link>
             <p className="text-gray-500 max-w-xs mb-6">
               Prêt à lancer votre prochain grand projet avec nous ? Contactez-nous aujourd'hui.
             </p>
-            {/* FIX: input contrôlé avec useState */}
             <div className="flex space-x-4">
               <input
                 type="email"
@@ -180,43 +191,53 @@ const App: React.FC = () => {
               </button>
             </div>
           </div>
+
           <div>
             <h4 className="font-bold mb-6">Services</h4>
             <ul className="space-y-4 text-gray-500 text-sm">
-              <li>Maquettes UI/UX</li>
-              <li>Branding</li>
-              <li>Infographie</li>
-              <li>Développement Mobile</li>
+              <li><Link to="/maquettes" className="hover:text-indigo-600 transition">Maquettes UI/UX</Link></li>
+              <li><Link to="/branding"  className="hover:text-indigo-600 transition">Branding</Link></li>
+              <li><Link to="/uiux"      className="hover:text-indigo-600 transition">Infographie</Link></li>
+              <li><Link to="/apps"      className="hover:text-indigo-600 transition">Développement Mobile</Link></li>
             </ul>
           </div>
+
           <div>
             <h4 className="font-bold mb-6">Contact</h4>
             <ul className="space-y-4 text-gray-500 text-sm">
-              <li>deugoueclaudedaurian@gmail.com</li>
-              <li>+237 6 94 21 81 00</li>
+              <li>
+                <a href="mailto:deugoueclaudedaurian@gmail.com" className="hover:text-indigo-600 transition">
+                  deugoueclaudedaurian@gmail.com
+                </a>
+              </li>
+              <li>
+                <a href="tel:+237694218100" className="hover:text-indigo-600 transition">
+                  +237 6 94 21 81 00
+                </a>
+              </li>
               <li>Douala, Cameroun</li>
             </ul>
           </div>
         </div>
       </footer>
+
     </div>
   );
 };
 
-// FIX: href utilisé sur un vrai lien <a> au lieu d'être ignoré
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, desc, icon, href }) => (
+const ServiceCard: React.FC<ServiceCardProps> = ({ title, desc, icon, to }) => (
   <div className="p-10 bg-white border border-gray-100 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all hover:-translate-y-2 group">
     <div className="mb-6 p-4 bg-gray-50 rounded-2xl inline-block group-hover:bg-lime-400 transition-colors">
       {icon}
     </div>
     <h3 className="text-2xl font-bold mb-4">{title}</h3>
     <p className="text-gray-500 leading-relaxed">{desc}</p>
-    <a
-      href={href}
-      className="mt-6 flex items-center text-indigo-600 font-bold group w-fit"
+    <Link
+      to={to}
+      className="mt-6 flex items-center text-indigo-600 font-bold w-fit group"
     >
       En savoir plus <ChevronRight className="ml-1 w-4 h-4 group-hover:ml-2 transition-all" />
-    </a>
+    </Link>
   </div>
 );
 
