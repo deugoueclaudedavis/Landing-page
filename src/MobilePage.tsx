@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
 import { ChevronRight, Smartphone, Apple, Star, Shield, Zap, RefreshCw, Code, CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const MobilePage: React.FC = () => {
   const [activePlatform, setActivePlatform] = useState<'ios' | 'android' | 'cross'>('cross');
@@ -79,10 +80,10 @@ const MobilePage: React.FC = () => {
               </p>
               <div className="flex gap-4 flex-wrap">
                 <button className="bg-indigo-600 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg hover:shadow-indigo-200 transition">
-                  Estimer mon projet
+                  <Link to="/estimer">Estimer mon projet</Link>
                 </button>
                 <button className="border-2 border-gray-200 px-8 py-4 rounded-full font-bold hover:border-indigo-600 transition">
-                  Voir nos apps
+                  <Link to="/apps">Voir nos apps</Link>
                 </button>
               </div>
             </div>

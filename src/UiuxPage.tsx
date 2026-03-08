@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
 import { ChevronRight, Layout, Monitor, Tablet, Smartphone, Eye, Zap, Users, BarChart2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const UIUXPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'web' | 'app' | 'dashboard'>('web');
@@ -95,10 +96,10 @@ const UIUXPage: React.FC = () => {
               </p>
               <div className="flex gap-4 flex-wrap">
                 <button className="bg-indigo-600 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg hover:shadow-indigo-200 transition">
-                  Demander un devis
+                  <Link to="/devis">Demander un devis</Link>
                 </button>
                 <button className="border-2 border-gray-200 px-8 py-4 rounded-full font-bold hover:border-indigo-600 transition">
-                  Voir nos maquettes
+                  <Link to="/maquettes">Voir nos maquettes</Link>
                 </button>
               </div>
             </div>

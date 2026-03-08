@@ -30,7 +30,7 @@ const App: React.FC = () => {
           </div>
 
           <button className="hidden md:block bg-[#1A1A1A] text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-indigo-600 transition">
-            <Link to="/demarer-un-projet">Démarrer un projet</Link>
+            <Link to="/demarrer">Démarrer un projet</Link>
           </button>
 
           {/* FIX: bouton burger avec aria-label pour l'accessibilité */}
@@ -69,7 +69,7 @@ const App: React.FC = () => {
             </p>
             <div className="flex space-x-4">
               <button className="bg-indigo-600 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg hover:shadow-indigo-200 transition">
-                  <Link to="/nostravaux">Voir nos travaux</Link>
+                  <Link to="/travaux">Voir nos travaux</Link>
               </button>
             </div>
           </div>

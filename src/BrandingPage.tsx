@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
 import { ChevronRight, Palette, Star, Layers, Type, Feather, Circle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const BrandingPage: React.FC = () => {
   const [activeProcess, setActiveProcess] = useState(0);
@@ -55,10 +56,10 @@ const BrandingPage: React.FC = () => {
               </p>
               <div className="flex gap-4 flex-wrap">
                 <button className="bg-indigo-600 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg hover:shadow-indigo-200 transition">
-                  Demander un devis
+                  <Link to="/devis">Demander un devis</Link>
                 </button>
                 <button className="border-2 border-gray-200 px-8 py-4 rounded-full font-bold hover:border-indigo-600 transition">
-                  Voir nos réalisations
+                  <Link to="/realisations">Voir nos réalisations</Link>
                 </button>
               </div>
             </div>

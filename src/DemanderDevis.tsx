@@ -372,7 +372,7 @@ const DemanderDevis: React.FC = () => {
       </div>
 
       <footer className="py-10 px-6 border-t border-gray-100 text-center text-sm text-gray-400">
-        © 2025 FrameTech — Douala, Cameroun
+        © 2026 FrameTech — Douala, Cameroun
       </footer>
     </div>
   );
