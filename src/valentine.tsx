@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
 import { Menu, X, ChevronRight, Smartphone, Palette, Layout } from 'lucide-react';
+
+// ─── CONFIG EMAILJS ───────────────────────────────────────────────────────────
+const EMAILJS_SERVICE_ID      = 'service_q7mhxla'; 
+const EMAILJS_PUBLIC_KEY      = 'PFxx8TADzIAdU6Aev';
+const EMAILJS_TEMPLATE_ABONNE = 'template_u8u7c1l'; 
+// ─────────────────────────────────────────────────────────────────────────────
 
 interface ServiceCardProps {
   title: string;
@@ -10,8 +17,37 @@ interface ServiceCardProps {
 }
 
 const App: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [email, setEmail] = useState('');
+  const [isMenuOpen, setIsMenuOpen]   = useState(false);
+  const [email, setEmail]             = useState('');
+  const [abonneMsg, setAbonneMsg]     = useState('');
+  const [abonneLoad, setAbonneLoad]   = useState(false);
+
+  const handleAbonnement = async () => {
+    if (!email || !email.includes('@')) {
+      setAbonneMsg('❌ Entrez un email valide.');
+      return;
+    }
+    setAbonneLoad(true);
+    setAbonneMsg('');
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ABONNE,
+        {
+          email_abonne: email,
+          date: new Date().toLocaleDateString('fr-FR'),
+        },
+        EMAILJS_PUBLIC_KEY,
+      );
+      setAbonneMsg('✅ Merci, vous êtes abonné !');
+      setEmail('');
+    } catch (err) {
+      console.error(err);
+      setAbonneMsg('❌ Erreur, réessayez ou contactez-nous.');
+    } finally {
+      setAbonneLoad(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#FDFDFF] text-slate-900 font-sans">
@@ -175,20 +211,36 @@ const App: React.FC = () => {
             <p className="text-gray-500 max-w-xs mb-6">
               Prêt à lancer votre prochain grand projet avec nous ? Contactez-nous aujourd'hui.
             </p>
-            <div className="flex space-x-4">
-              <input
-                type="email"
-                placeholder="Votre email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-gray-100 px-4 py-2 rounded-lg outline-none focus:ring-2 ring-indigo-500"
-              />
-              <button
-                onClick={() => { alert(`Abonné : ${email}`); setEmail(''); }}
-                className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition"
-              >
-                S'abonner
-              </button>
+
+            {/* ── ABONNEMENT NEWSLETTER ── */}
+            <div className="flex flex-col gap-3">
+              <div className="flex space-x-3">
+                <input
+                  type="email"
+                  placeholder="Votre email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setAbonneMsg('');
+                  }}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAbonnement()}
+                  className="bg-gray-100 px-4 py-2 rounded-lg outline-none focus:ring-2 ring-indigo-500 flex-1 text-sm"
+                />
+                <button
+                  onClick={handleAbonnement}
+                  disabled={abonneLoad || !email}
+                  className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition disabled:opacity-50 text-sm font-semibold"
+                >
+                  {abonneLoad ? '...' : "S'abonner"}
+                </button>
+              </div>
+              {abonneMsg && (
+                <p className={`text-sm font-medium ${
+                  abonneMsg.startsWith('✅') ? 'text-green-600' : 'text-red-500'
+                }`}>
+                  {abonneMsg}
+                </p>
+              )}
             </div>
           </div>
 
