@@ -9,9 +9,9 @@ import {
 } from 'lucide-react';
 
 // ─── CONFIG EMAILJS ──────────────────────────────────────────────────────────
-const EMAILJS_SERVICE_ID  = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID  as string;
-const EMAILJS_TEMPLATE_DEVIS = (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID as string;
-const EMAILJS_PUBLIC_KEY  = (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY  as string;
+const EMAILJS_SERVICE_ID      = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_PUBLIC_KEY      = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const EMAILJS_TEMPLATE_DEVIS = import.meta.env.VITE_EMAILJS_TEMPLATE_DEVIS; 
 // ─────────────────────────────────────────────────────────────────────────────
 
 type ServiceId = 'branding' | 'uiux' | 'mobile' | 'complet';
