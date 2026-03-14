@@ -9,6 +9,7 @@ import { Menu, X, ChevronRight, Smartphone, Palette, Layout } from 'lucide-react
 const EMAILJS_SERVICE_ID      = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 const EMAILJS_PUBLIC_KEY      = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 const EMAILJS_TEMPLATE_ABONNE = import.meta.env.VITE_EMAILJS_TEMPLATE_ABONNE; 
+const EMAILJS_TEMPLATE_ID     = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 // ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -34,7 +35,7 @@ const App: React.FC = () => {
     return;
   }
   setLastSent(now);
-  // ... reste du code
+  //
 };
 
   const handleAbonnement = async () => {

@@ -12,6 +12,7 @@ import {
 const EMAILJS_SERVICE_ID      = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 const EMAILJS_PUBLIC_KEY      = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 const EMAILJS_TEMPLATE_DEVIS = import.meta.env.VITE_EMAILJS_TEMPLATE_DEVIS; 
+const EMAILJS_TEMPLATE_ID    = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 // ─────────────────────────────────────────────────────────────────────────────
 
 type ServiceId = 'branding' | 'uiux' | 'mobile' | 'complet';
