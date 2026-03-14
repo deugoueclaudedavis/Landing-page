@@ -9,9 +9,9 @@ import {
 } from 'lucide-react';
 
 // ─── CONFIG EMAILJS ──────────────────────────────────────────────────────────
-const EMAILJS_SERVICE_ID  = 'TON_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'TON_TEMPLATE_ID';
-const EMAILJS_PUBLIC_KEY  = 'TA_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID  = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID  as string;
+const EMAILJS_TEMPLATE_ID = (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID as string;
+const EMAILJS_PUBLIC_KEY  = (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY  as string;
 // ─────────────────────────────────────────────────────────────────────────────
 
 type ServiceId = 'branding' | 'uiux' | 'mobile' | 'complet';
@@ -27,10 +27,10 @@ interface DevisForm {
 }
 
 const services: { id: ServiceId; label: string; desc: string; icon: React.ReactNode; price: string; color: string }[] = [
-  { id: 'branding', label: 'Branding & Identité', desc: 'Logo, charte, guide de marque', icon: <Palette className="w-5 h-5" />, price: 'Dès 150 000 F', color: 'indigo' },
-  { id: 'uiux',     label: 'Conception UI/UX',    desc: 'Maquettes, prototypes, design system', icon: <Layout className="w-5 h-5" />,  price: 'Dès 200 000 F', color: 'violet' },
+  { id: 'branding', label: 'Branding & Identité', desc: 'Logo, charte, guide de marque',          icon: <Palette    className="w-5 h-5" />, price: 'Dès 150 000 F', color: 'indigo'  },
+  { id: 'uiux',     label: 'Conception UI/UX',    desc: 'Maquettes, prototypes, design system',   icon: <Layout     className="w-5 h-5" />, price: 'Dès 200 000 F', color: 'violet'  },
   { id: 'mobile',   label: 'App Mobile',           desc: 'iOS & Android, React Native / Flutter', icon: <Smartphone className="w-5 h-5" />, price: 'Dès 500 000 F', color: 'emerald' },
-  { id: 'complet',  label: 'Projet Complet',       desc: 'Branding + UI/UX + Développement', icon: <Zap className="w-5 h-5" />, price: 'Sur mesure', color: 'amber' },
+  { id: 'complet',  label: 'Projet Complet',       desc: 'Branding + UI/UX + Développement',      icon: <Zap        className="w-5 h-5" />, price: 'Sur mesure',    color: 'amber'   },
 ];
 
 const budgetOptions = [
@@ -41,6 +41,23 @@ const budgetOptions = [
   '+ 2 000 000 F',
 ];
 
+// ─── Validation anti-injection ───────────────────────────────────────────────
+const htmlRegex  = /<[^>]*>/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const validerFormulaire = (form: DevisForm): string | null => {
+  if (form.services.length === 0) return 'Sélectionnez au moins un service.';
+  if (!form.nom.trim())           return 'Le nom est requis.';
+  if (form.nom.length > 100)      return 'Nom trop long.';
+  if (!emailRegex.test(form.email)) return 'Email invalide.';
+  if (!form.budget)               return 'Sélectionnez un budget.';
+  if (form.message.length > 2000) return 'Message trop long (2000 caractères max).';
+  if (htmlRegex.test(form.nom) || htmlRegex.test(form.message) || htmlRegex.test(form.entreprise))
+    return 'Caractères non autorisés détectés.';
+  return null;
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
 const DemanderDevis: React.FC = () => {
   const [form, setForm] = useState<DevisForm>({
     services: [],
@@ -49,6 +66,10 @@ const DemanderDevis: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading]     = useState(false);
   const [error, setError]         = useState('');
+
+  // ── Rate limiting ──────────────────────────────────────────────────────────
+  const [lastSent, setLastSent]   = useState<number>(0);
+  // ──────────────────────────────────────────────────────────────────────────
 
   const toggleService = (id: ServiceId) => {
     setForm(prev => ({
@@ -62,7 +83,21 @@ const DemanderDevis: React.FC = () => {
   const isValid = form.services.length > 0 && form.nom && form.email && form.budget;
 
   const handleSubmit = async () => {
-    if (!isValid) return;
+    // ── Rate limiting : 30 secondes entre chaque envoi ──
+    const now = Date.now();
+    if (now - lastSent < 30000) {
+      setError('⏳ Attendez 30 secondes avant de renvoyer.');
+      return;
+    }
+
+    // ── Validation ──
+    const validationError = validerFormulaire(form);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setLastSent(now);
     setLoading(true);
     setError('');
 
@@ -114,9 +149,9 @@ const DemanderDevis: React.FC = () => {
           <div className="bg-indigo-900 text-white rounded-3xl p-7 mb-8 text-left space-y-3">
             <p className="text-lime-400 font-bold mb-4">Récapitulatif de votre demande</p>
             {[
-              { label: 'Services', value: form.services.map(id => services.find(s => s.id === id)?.label).join(', ') },
+              { label: 'Services',        value: form.services.map(id => services.find(s => s.id === id)?.label).join(', ') },
               { label: 'Budget envisagé', value: form.budget },
-              { label: 'Contact', value: form.email },
+              { label: 'Contact',         value: form.email  },
             ].map(row => (
               <div key={row.label} className="flex justify-between text-sm">
                 <span className="text-indigo-300">{row.label}</span>
@@ -232,10 +267,10 @@ const DemanderDevis: React.FC = () => {
                 <p className="text-gray-500 text-sm mb-5">Pour vous envoyer le devis.</p>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {[
-                    { key: 'nom',        label: 'Nom complet *',        placeholder: 'Jean Dupont',                type: 'text'  },
-                    { key: 'email',      label: 'Email *',              placeholder: 'jean@example.com',           type: 'email' },
-                    { key: 'telephone',  label: 'Téléphone',            placeholder: '+237 6 XX XX XX XX',         type: 'tel'   },
-                    { key: 'entreprise', label: 'Entreprise / Projet',  placeholder: 'Nom de votre structure',     type: 'text'  },
+                    { key: 'nom',        label: 'Nom complet *',       placeholder: 'Jean Dupont',            type: 'text'  },
+                    { key: 'email',      label: 'Email *',             placeholder: 'jean@example.com',       type: 'email' },
+                    { key: 'telephone',  label: 'Téléphone',           placeholder: '+237 6 XX XX XX XX',     type: 'tel'   },
+                    { key: 'entreprise', label: 'Entreprise / Projet', placeholder: 'Nom de votre structure', type: 'text'  },
                   ].map(field => (
                     <div key={field.key}>
                       <label className="block text-sm font-bold mb-2 text-gray-700">{field.label}</label>
@@ -299,11 +334,11 @@ const DemanderDevis: React.FC = () => {
                 <h3 className="font-bold text-lg mb-6 text-lime-400">Notre engagement</h3>
                 <div className="space-y-5">
                   {[
-                    { icon: <Clock className="w-5 h-5" />,       text: 'Réponse garantie sous 24h ouvrées' },
-                    { icon: <Shield className="w-5 h-5" />,      text: 'Devis 100% gratuit et sans engagement' },
-                    { icon: <Star className="w-5 h-5" />,        text: 'Proposition détaillée et chiffrée' },
-                    { icon: <Headphones className="w-5 h-5" />,  text: 'Accompagnement personnalisé' },
-                    { icon: <CheckCircle className="w-5 h-5" />, text: '80+ clients satisfaits depuis 2020' },
+                    { icon: <Clock      className="w-5 h-5" />, text: 'Réponse garantie sous 24h ouvrées'    },
+                    { icon: <Shield     className="w-5 h-5" />, text: 'Devis 100% gratuit et sans engagement' },
+                    { icon: <Star       className="w-5 h-5" />, text: 'Proposition détaillée et chiffrée'     },
+                    { icon: <Headphones className="w-5 h-5" />, text: 'Accompagnement personnalisé'           },
+                    { icon: <CheckCircle className="w-5 h-5" />,text: '80+ clients satisfaits depuis 2020'   },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <div className="text-lime-400 flex-shrink-0 mt-0.5">{item.icon}</div>

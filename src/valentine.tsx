@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import { Menu, X, ChevronRight, Smartphone, Palette, Layout } from 'lucide-react';
 
+
+
 // ─── CONFIG EMAILJS ───────────────────────────────────────────────────────────
-const EMAILJS_SERVICE_ID      = 'service_q7mhxla'; 
-const EMAILJS_PUBLIC_KEY      = 'PFxx8TADzIAdU6Aev';
-const EMAILJS_TEMPLATE_ABONNE = 'template_u8u7c1l'; 
+const EMAILJS_SERVICE_ID      = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID; 
+const EMAILJS_PUBLIC_KEY      = (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY;
+const EMAILJS_TEMPLATE_ABONNE = ''; 
 // ─────────────────────────────────────────────────────────────────────────────
+
 
 interface ServiceCardProps {
   title: string;
@@ -21,6 +24,18 @@ const App: React.FC = () => {
   const [email, setEmail]             = useState('');
   const [abonneMsg, setAbonneMsg]     = useState('');
   const [abonneLoad, setAbonneLoad]   = useState(false);
+
+  const [lastSent, setLastSent] = useState<number>(0);
+
+  const handleSubmit = async () => {
+  const now = Date.now();
+  if (now - lastSent < 30000) { // 30 secondes entre chaque envoi
+    setAbonneMsg('⏳ Attendez 30 secondes avant de renvoyer.');
+    return;
+  }
+  setLastSent(now);
+  // ... reste du code
+};
 
   const handleAbonnement = async () => {
     if (!email || !email.includes('@')) {
