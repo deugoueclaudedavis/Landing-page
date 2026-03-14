@@ -10,7 +10,7 @@ import {
 
 // ─── CONFIG EMAILJS ──────────────────────────────────────────────────────────
 const EMAILJS_SERVICE_ID  = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID  as string;
-const EMAILJS_TEMPLATE_ID = (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID as string;
+const EMAILJS_TEMPLATE_DEVIS = (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID as string;
 const EMAILJS_PUBLIC_KEY  = (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY  as string;
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -108,7 +108,7 @@ const DemanderDevis: React.FC = () => {
     try {
       await emailjs.send(
         EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+        EMAILJS_TEMPLATE_DEVIS,
         {
           type:        'Demande de devis',
           nom:         form.nom,
