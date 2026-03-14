@@ -5,9 +5,9 @@ import { ArrowLeft, ChevronRight, Palette, Layout, Smartphone, Send, CheckCircle
 // ─── CONFIG EMAILJS ─────────────────────────────────────────────────────────
 // Remplace ces 3 valeurs par celles de ton tableau de bord EmailJS :
 // https://dashboard.emailjs.com
-const EMAILJS_SERVICE_ID  = 'TON_SERVICE_ID';   // ex : 'service_abc123'
-const EMAILJS_TEMPLATE_ID = 'TON_TEMPLATE_ID';  // ex : 'template_xyz456'
-const EMAILJS_PUBLIC_KEY  = 'TA_PUBLIC_KEY';     // ex : 'aBcDeFgHiJkLmNoPq'
+const EMAILJS_SERVICE_ID      = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID; 
+const EMAILJS_PUBLIC_KEY      = (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY;
+const EMAILJS_TEMPLATE_DEVIS = (import.meta as any).env.VITE_EMAILJS_TEMPLATE_DEVIS;     // ex : 'aBcDeFgHiJkLmNoPq'
 // ────────────────────────────────────────────────────────────────────────────
 
 type Service = 'branding' | 'uiux' | 'mobile' | 'complet';
@@ -83,7 +83,7 @@ const DemarrerProjet: React.FC = () => {
     try {
       await emailjs.send(
         EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+        EMAILJS_TEMPLATE_DEVIS,
         {
           nom:         form.nom,
           email:       form.email,
